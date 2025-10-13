@@ -25,12 +25,12 @@ jobs:
         pip install pytest
         
     - name: Initialize database
-    run: |
-      python3 -c "
+      run: |
+        python3 -c "
         from database import init_database, add_sample_data
         init_database()
-        add_sample_data()
-        "
+        add_sample_data()“
+    - name: Run tests
       run: |
         python3 -m pytest test/add_book_test.py
         python3 -m pytest test/book_catalog_display_test.py
