@@ -1,0 +1,41 @@
+name: Python CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest
+        
+    - name: Initialize database
+    run: |
+      python3 -c "
+        from database import init_database, add_sample_data
+        init_database()
+        add_sample_data()
+        "
+      run: |
+        python3 -m pytest test/add_book_test.py
+        python3 -m pytest test/book_catalog_display_test.py
+        python3 -m pytest test/book_return_process_test.py
+        python3 -m pytest test/book_search_functionality_test.py
+        python3 -m pytest test/borrow_book_by_patron_test.py
+        python3 -m pytest test/late_fee_calculation_test.py
+        python3 -m pytest test/patron_status_report_test.py
