@@ -1,3 +1,7 @@
+Assignment 2 CI/CD: 
+
+[![Python CI](https://github.com/TikaNice/cisc327-library-management-a2-6240/actions/workflows/ci.yml/badge.svg)](https://github.com/TikaNice/cisc327-library-management-a2-6240/actions/workflows/ci.yml)
+
 # Library Management System - Flask Web Application with SQLite
 
 ## Overview
