@@ -1,7 +1,7 @@
 import pytest
 from datetime import datetime, timedelta
 from database import get_db_connection, init_database, add_sample_data, get_all_books
-from library_service import calculate_late_fee_for_book, borrow_book_by_patron, add_book_to_catalog
+from services.library_service import calculate_late_fee_for_book, borrow_book_by_patron, add_book_to_catalog
 
 
 #Assume database alread exist
@@ -148,3 +148,4 @@ class TestLateFeeCalculation:
         assert fee == 15.0
 
 """
+

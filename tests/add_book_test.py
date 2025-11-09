@@ -1,6 +1,6 @@
 import pytest
 from database import get_all_books, get_db_connection, get_patron_borrow_count, get_patron_borrowed_books
-from library_service import (
+from services.library_service import (
     add_book_to_catalog
 )
 
@@ -80,3 +80,48 @@ class TestAddBookToCatalog:
         assert result["success"] is False
         assert "positive integer" in result["message"]
 """
+
+
+
+"""
+Adding more test cases for the add_book_to_catalog function to inprove the cover rate.
+"""
+#Add book with more than 200 characters in title(invaild)
+def test_add_book_invalid_too_long_title():
+    clean_database()
+    #Add book with more than 200 characters in title(invaild)
+    too_long_title = "T"*201
+    success, message = add_book_to_catalog(too_long_title, "Test Author", "1234567892235", 5)
+    
+    assert success == False
+    assert "Title must be less than 200 characters" in message
+    
+#Invail add book with no author
+def test_add_book_invalid_no_author():
+    clean_database()
+    """Test adding a book with valid input."""
+    success, message = add_book_to_catalog("Test Book","", "1234567892235", 5)
+    
+    assert success == False
+    assert "Author is required" in message
+
+#Add book with more than 200 characters in title(invaild)
+def test_add_book_invalid_too_long_author():
+    clean_database()
+    #Add book with more than 200 characters in title(invaild)
+    too_long_author = "T"*101
+    success, message = add_book_to_catalog("Test Book", too_long_author, "1234567892235", 5)
+    
+    assert success == False
+    assert "Author must be less than 100 characters" in message
+
+
+#Test database error(fail to insert book into db)
+def test_add_book_fail_database_insert(mocker):
+    clean_database()
+    """Test adding a book with valid input. But fail to insert book into db"""
+    mocker.patch("services.library_service.insert_book", return_value=False)
+    success, message = add_book_to_catalog("Test Book", "Test Author", "1234567892235", 5)
+    
+    assert success == False
+    assert "Database error occurred while adding the book" in message

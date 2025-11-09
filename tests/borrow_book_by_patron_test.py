@@ -1,7 +1,7 @@
 import pytest
 from datetime import datetime, timedelta
 from database import get_all_books, get_db_connection, get_patron_borrow_count, get_patron_borrowed_books
-from library_service import (
+from services.library_service import (
     borrow_book_by_patron,
     add_book_to_catalog
 )
@@ -89,3 +89,29 @@ def test_borrow_book_no_available_copies():
     assert "this book is currently not available." in message.lower()
     
 
+"""
+Adding more test cases for the add_book_to_catalog function to inprove the cover rate.
+"""
+def test_borrow_book_too_much_borrow():
+    clean_database()
+    #Add a sample book. 
+    add_book_to_catalog("Test Book", "Test Author", "1234567890123", 15)
+    
+    books = get_all_books()
+    
+    book_id = books[0]['id']
+    patron_id = "123456"
+    
+    #Borrow the book 5 times
+    borrow_book_by_patron(patron_id, book_id)
+    borrow_book_by_patron(patron_id, book_id)
+    borrow_book_by_patron(patron_id, book_id)
+    borrow_book_by_patron(patron_id, book_id)
+    borrow_book_by_patron(patron_id, book_id)
+    
+    #Borrow the book once more, should fail because patron has reached the borrow limit
+    success, message = borrow_book_by_patron(patron_id, book_id)
+    assert success == False
+    assert "You have reached the maximum borrowing limit of 5 books" in message
+    
+    

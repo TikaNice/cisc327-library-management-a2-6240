@@ -1,6 +1,6 @@
 import pytest
 from database import get_all_books, init_database, add_sample_data, get_db_connection
-from library_service import (
+from services.library_service import (
     add_book_to_catalog
 )
 

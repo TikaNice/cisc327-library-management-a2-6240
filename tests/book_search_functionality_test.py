@@ -1,6 +1,6 @@
 import pytest
 from database import get_all_books, get_db_connection, get_patron_borrow_count, get_patron_borrowed_books
-from library_service import (
+from services.library_service import (
     add_book_to_catalog,
     search_books_in_catalog
 )
